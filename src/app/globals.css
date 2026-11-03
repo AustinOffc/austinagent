@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Token warna (RGB tanpa koma agar bisa dipakai dengan alpha). Terang = kertas arsip dingin;
+   gelap = laut malam. Status (ok/warn/bad) selalu dipakai bersama teks, tidak hanya warna. */
+:root {
+  --paper: 236 239 234;
+  --panel: 247 248 245;
+  --ink: 23 48 43;
+  --soft: 91 111 105;
+  --rule: 203 211 205;
+  --accent: 39 64 216;
+  --accent-ink: 255 255 255;
+  --ok: 28 140 94;
+  --warn: 160 105 0;
+  --bad: 200 56 46;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: 14 26 30;
+    --panel: 22 38 43;
+    --ink: 228 236 232;
+    --soft: 150 169 163;
+    --rule: 44 64 69;
+    --accent: 142 160 255;
+    --accent-ink: 14 26 30;
+    --ok: 76 195 138;
+    --warn: 227 179 65;
+    --bad: 255 123 114;
+    color-scheme: dark;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  @apply bg-paper font-body text-ink antialiased;
+  font-size: 16px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  /* Ruang aman untuk bottom bar di layar kecil */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+h1, h2, h3 {
+  @apply font-display;
+  letter-spacing: -0.01em;
+}
+
+:focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: rgb(var(--accent) / 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@layer components {
+  .field {
+    @apply w-full rounded-lg border border-rule bg-panel px-3 py-2.5 text-base text-ink placeholder:text-soft/70;
+  }
+  .field:disabled {
+    @apply opacity-60;
+  }
+  .btn {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg px-4 py-2 text-base font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-accent text-accent-ink hover:opacity-90;
+  }
+  .btn-quiet {
+    @apply btn border border-rule bg-transparent text-ink hover:bg-ink/5;
+  }
+  .btn-danger {
+    @apply btn bg-bad text-white hover:opacity-90;
+  }
+  .rule-y > * + * {
+    @apply border-t border-rule;
+  }
+}
